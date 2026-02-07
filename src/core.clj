@@ -1,16 +1,17 @@
 (ns core
   (:require
-   [clojure.data.priority-map :refer [priority-map]]
+   [clojure.data.priority-map :refer [priority-map-by]]
+   [clojure.java.io :refer [file make-parents]]
    [clojure.math :refer [log]]
-   [clojure.string :refer [includes?]]
-   [com.rpl.specter :refer [ALL BEGINNING setval]]
+   [clojure.string :refer [includes? join]]
+   [com.rpl.specter :refer [AFTER-ELEM ALL BEGINNING FIRST setval transform]]
    [libpython-clj2.python :refer [$a ->py-list from-import get-item initialize! py.. with]]))
 
 (initialize!)
 
 (from-import builtins slice)
 
-(from-import torch nn no_grad tensor)
+(from-import torch nn no_grad nonzero tensor)
 
 (from-import transformers AutoModelForCausalLM AutoTokenizer)
 
@@ -30,7 +31,7 @@
   1)
 
 (def threshold
-  (* exponent (log 10)))
+  (- (* exponent (log 10))))
 
 (defn pop-n
   [n coll]
@@ -92,18 +93,56 @@
        (includes? s "\"")))
 
 (def stop-tokens
-  (map last (filter (comp stop? first) vocab)))
+  (set (map last (filter (comp stop? first) vocab))))
 
 (def fragment-tokens
-  (map last (filter (comp fragment? first) vocab)))
+  (set (map last (filter (comp fragment? first) vocab))))
 
 (def batch-size
   2)
 
-(defn expand
+(def data-directory
+  "data")
+
+(def candidates-file
+  (file data-directory "candidates.ednl"))
+
+(defn expand-node*
+  [prefix-sequence prefix-likelihood predictions surviving-tokens]
+  (map (fn [token likelihood]
+         [(setval AFTER-ELEM token prefix-sequence) (+ prefix-likelihood likelihood)])
+       surviving-tokens
+       (py.. (get-item predictions (->py-list surviving-tokens)) tolist)))
+
+(defn expand-node
+  [[prefix-sequence prefix-likelihood] predictions]
+  (let [surviving-tokens (remove fragment-tokens (-> predictions
+                                                     ($a ge (- threshold prefix-likelihood))
+                                                     nonzero
+                                                     (py.. flatten)
+                                                     (py.. tolist)))]
+    (edn-lines/spit candidates-file
+                    (->> surviving-tokens
+                         (filter stop-tokens)
+                         (expand-node* prefix-sequence prefix-likelihood predictions)
+                         (transform [ALL FIRST]
+                                    (comp join
+                                          (partial map decode*))))
+                    {:append? true})
+    (expand-node* prefix-sequence prefix-likelihood predictions (remove stop-tokens surviving-tokens))))
+
+(defn search-step
   [m]
-  (predict (map first (take batch-size m))))
+  (when-not (empty? m)
+    (->> m
+         (take batch-size)
+         (map first)
+         predict
+         (mapcat expand-node (take batch-size m))
+         (into (pop-n batch-size m))
+         recur)))
 
 (defn -main
   []
-  (expand (priority-map ($a tokenizer encode prompt) 0)))
+  (make-parents data-directory)
+  (search-step (priority-map-by > ($a tokenizer encode prompt) 0)))

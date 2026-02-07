@@ -25,6 +25,9 @@ pom.xml.asc
 .nrepl-port
 .cpcache/
 
+### cue
+data
+
 ### Devenv
 .devenv*
 devenv.local.nix
