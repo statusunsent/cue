@@ -68,7 +68,7 @@
                      (make-require 'builtins.frozenset 'python.frozenset)
                      (make-require 'builtins.str 'python.str)
                      (make-require 'builtins 'python)])
-          (meta node))]
+                   (meta node))]
     ;; XXX: uncomment following and run clj-kondo on cl_format.clj to debug
     ;;(prn (api/sexpr node))
     ;;(prn (api/sexpr new-node))

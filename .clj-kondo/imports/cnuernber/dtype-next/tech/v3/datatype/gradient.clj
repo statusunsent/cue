@@ -1,5 +1,6 @@
 (ns tech.v3.datatype.gradient)
 
+
 (defmacro append-diff
   [rtype n-elems read-fn cast-fn append reader]
   `(. ~read-fn ~reader))

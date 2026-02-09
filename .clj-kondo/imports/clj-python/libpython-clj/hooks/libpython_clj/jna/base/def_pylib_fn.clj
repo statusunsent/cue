@@ -71,12 +71,12 @@
                        [an-arg a-type]))
                    argpairs)
         new-node (with-meta (api/list-node
-                             (apply concat
-                                    [(api/token-node 'defn)
-                                     fn-name
-                                     (api/vector-node (map first pairs))]
-                                    pairs))
-                   (meta node))]
+                               (apply concat
+                                      [(api/token-node 'defn)
+                                       fn-name
+                                       (api/vector-node (map first pairs))]
+                                      pairs))
+                     (meta node))]
     ;; XXX: uncomment following and run clj-kondo on cl_format.clj to debug
     ;;(prn (api/sexpr node))
     ;;(prn (api/sexpr new-node))
