@@ -61,7 +61,10 @@
   # https://devenv.sh/git-hooks/
   # git-hooks.hooks.shellcheck.enable = true;
   git-hooks.hooks = {
-    cljfmt.enable = true;
+    cljfmt = {
+      enable = true;
+      excludes = [ "^\.clj-kondo/imports" ];
+    };
     gitleaks = {
       enable = true;
       # https://github.com/gitleaks/gitleaks/blob/ca20267a84aa1fa2c2a9c1a13cdb50cafb48eeb0/.pre-commit-hooks.yaml#L4

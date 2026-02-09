@@ -1,5 +1,6 @@
 (ns tech.v3.datatype.ffi)
 
+
 (defmacro define-library!
   [lib-varname lib-fns _lib-symbols _error-checker]
   (let [fn-defs (second lib-fns)]

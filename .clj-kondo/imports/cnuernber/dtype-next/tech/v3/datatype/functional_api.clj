@@ -28,39 +28,40 @@
 
 (def init-unary-ops
   #{:tech.numerics/tanh
-    :tech.numerics/sq
-    :tech.numerics/expm1
-    :tech.numerics/log10
-    :tech.numerics/cos
-    :tech.numerics/tan
-    :tech.numerics/atan
-    :tech.numerics/sqrt
-    :tech.numerics/cosh
-    :tech.numerics/get-significand
-    :tech.numerics/-
-    :tech.numerics/next-up
-    :tech.numerics/cbrt
-    :tech.numerics/next-down
-    :tech.numerics/exp
-    :tech.numerics/log1p
-    :tech.numerics//
-    :tech.numerics/asin
-    :tech.numerics/sinh
-    :tech.numerics/rint
-    :tech.numerics/+
-    :tech.numerics/bit-not
-    :tech.numerics/signum
-    :tech.numerics/abs
-    :tech.numerics/ulp
-    :tech.numerics/sin
-    :tech.numerics/to-radians
-    :tech.numerics/acos
-    :tech.numerics/ceil
-    :tech.numerics/to-degrees
-    :tech.numerics/identity
-    :tech.numerics/logistic
-    :tech.numerics/log
-    :tech.numerics/floor})
+  :tech.numerics/sq
+  :tech.numerics/expm1
+  :tech.numerics/log10
+  :tech.numerics/cos
+  :tech.numerics/tan
+  :tech.numerics/atan
+  :tech.numerics/sqrt
+  :tech.numerics/cosh
+  :tech.numerics/get-significand
+  :tech.numerics/-
+  :tech.numerics/next-up
+  :tech.numerics/cbrt
+  :tech.numerics/next-down
+  :tech.numerics/exp
+  :tech.numerics/log1p
+  :tech.numerics//
+  :tech.numerics/asin
+  :tech.numerics/sinh
+  :tech.numerics/rint
+  :tech.numerics/+
+  :tech.numerics/bit-not
+  :tech.numerics/signum
+  :tech.numerics/abs
+  :tech.numerics/ulp
+  :tech.numerics/sin
+  :tech.numerics/to-radians
+  :tech.numerics/acos
+  :tech.numerics/ceil
+  :tech.numerics/to-degrees
+  :tech.numerics/identity
+  :tech.numerics/logistic
+  :tech.numerics/log
+  :tech.numerics/floor})
+
 
 (defmacro implement-arithmetic-operations
   []
@@ -100,6 +101,7 @@
                     ([~'x ~'y & ~'args]
                      [~'x ~'y ~'args]))))))))))
 
+
 (def init-unary-pred-ops
   [:tech.numerics/mathematical-integer?
    :tech.numerics/even?
@@ -112,23 +114,26 @@
    :tech.numerics/nan?
    :tech.numerics/neg?])
 
+
 (defmacro implement-unary-predicates
   []
   `(do
      ~@(->> init-unary-pred-ops
-            (map (fn [pred-op]
-                   (let [fn-symbol (symbol (name pred-op))]
-                     `(defn ~fn-symbol
-                        ([~'arg ~'_options]
-                         ~'arg)
-                        ([~'arg]
-                         ~'arg))))))))
+           (map (fn [pred-op]
+                  (let [fn-symbol (symbol (name pred-op))]
+                    `(defn ~fn-symbol
+                       ([~'arg ~'_options]
+                        ~'arg)
+                       ([~'arg]
+                        ~'arg))))))))
+
 
 (def init-binary-pred-ops
   [:tech.numerics/and
    :tech.numerics/or
    :tech.numerics/eq
    :tech.numerics/not-eq])
+
 
 (defmacro implement-binary-predicates
   []
@@ -141,11 +146,13 @@
                         (apply + ~'lhs ~'rhs)
                         ~'lhs)))))))
 
+
 (def init-binary-pred-comp-ops
   [:tech.numerics/>
    :tech.numerics/>=
    :tech.numerics/<
    :tech.numerics/<=])
+
 
 (defmacro implement-compare-predicates
   []

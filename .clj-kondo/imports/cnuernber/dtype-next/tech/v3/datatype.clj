@@ -3,7 +3,7 @@
 (defmacro make-reader
   ([datatype n-elems read-op]
    `(let [~'idx ~n-elems]
-      ~read-op))
+       ~read-op))
   ([reader-datatype adv-datatype n-elems read-op]
    `(let [~'idx ~n-elems]
       ~read-op)))

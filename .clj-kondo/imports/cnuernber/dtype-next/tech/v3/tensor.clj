@@ -4,10 +4,11 @@
   [op-code-args]
   (if (symbol? op-code-args)
     [op-code-args [:a :b :c]]
-    (->> op-code-args
-         (mapcat (fn [argname]
-                   [argname 1.0]))
-         (vec))))
+       (->> op-code-args
+            (mapcat (fn [argname]
+                      [argname 1.0]))
+            (vec))))
+
 
 (defmacro typed-compute-tensor
   ([datatype advertised-datatype rank shape op-code-args op-code]
