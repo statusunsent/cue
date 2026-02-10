@@ -5,6 +5,7 @@
    [clojure.math :refer [log]]
    [clojure.string :refer [includes? join]]
    [com.rpl.specter :refer [AFTER-ELEM ALL BEGINNING FIRST setval transform]]
+   [lambdaisland.edn-lines :as edn-lines]
    [libpython-clj2.python :refer [$a ->py-list from-import get-item initialize! py.. with]]))
 
 (initialize!)
@@ -144,5 +145,5 @@
 
 (defn -main
   []
-  (make-parents data-directory)
+  (make-parents candidates-file)
   (search-step (priority-map-by > ($a tokenizer encode prompt) 0)))
