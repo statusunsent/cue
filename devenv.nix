@@ -6,6 +6,7 @@
 {
   # https://devenv.sh/basics/
   env.GREET = "devenv";
+  env.PORT = 7888;
 
   # https://devenv.sh/packages/
   packages = [
@@ -29,9 +30,14 @@
 
   # https://devenv.sh/processes/
   # processes.dev.exec = "${lib.getExe pkgs.watchexec} -n -- ls -la";
-  processes.watch.exec = ''
-    upload && fswatch -o . | xargs -I _ upload
-  '';
+  processes = {
+    nrepl.exec = ''
+      ssh -L "$PORT":localhost:"$PORT" -tt cue 'cd cue && devenv shell clojure -M:nrepl'
+    '';
+    watch.exec = ''
+      upload && fswatch -o . | xargs -I _ upload
+    '';
+  };
 
   # https://devenv.sh/services/
   # services.postgres.enable = true;
