@@ -32,7 +32,7 @@
   # processes.dev.exec = "${lib.getExe pkgs.watchexec} -n -- ls -la";
   processes = {
     nrepl.exec = ''
-      ssh -L "$PORT":localhost:"$PORT" -tt cue 'cd cue && devenv shell clojure -M:nrepl'
+      echo $PORT > .nrepl-port && ssh -L "$PORT":localhost:"$PORT" -tt cue 'cd cue && devenv shell clojure -M:nrepl'
     '';
     watch.exec = ''
       upload && fswatch -o . | xargs -I _ upload

@@ -1,2 +1,1 @@
-{:middleware [cider.nrepl/cider-middleware]
- :port 7888}
+{:middleware [cider.nrepl/cider-middleware]}
