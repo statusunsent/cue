@@ -9,11 +9,13 @@
 
   # https://devenv.sh/packages/
   packages = [
+    pkgs.fswatch
     pkgs.git
     pkgs.gitleaks
     pkgs.nil
     pkgs.pre-commit
     pkgs.python313Packages.pre-commit-hooks
+    pkgs.rsync
   ];
 
   # https://devenv.sh/languages/
@@ -27,6 +29,9 @@
 
   # https://devenv.sh/processes/
   # processes.dev.exec = "${lib.getExe pkgs.watchexec} -n -- ls -la";
+  processes.upload.exec = ''
+    fswatch -o . | xargs -I _ rsync -avz --exclude-from .gitignore --del --exclude .git . cue:~/cue
+  '';
 
   # https://devenv.sh/services/
   # services.postgres.enable = true;
