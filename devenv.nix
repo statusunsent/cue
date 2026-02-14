@@ -29,17 +29,22 @@
 
   # https://devenv.sh/processes/
   # processes.dev.exec = "${lib.getExe pkgs.watchexec} -n -- ls -la";
-  processes.upload.exec = ''
-    fswatch -o . | xargs -I _ rsync -avz --exclude-from .gitignore --del --exclude .git . cue:~/cue
+  processes.watch.exec = ''
+    upload && fswatch -o . | xargs -I _ upload
   '';
 
   # https://devenv.sh/services/
   # services.postgres.enable = true;
 
   # https://devenv.sh/scripts/
-  scripts.hello.exec = ''
-    echo hello from $GREET
-  '';
+  scripts = {
+    upload.exec = ''
+      rsync -avz --exclude-from .gitignore --del --exclude .git . cue:~/cue
+    '';
+    hello.exec = ''
+      echo hello from $GREET
+    '';
+  };
 
   # https://devenv.sh/basics/
   enterShell = ''
