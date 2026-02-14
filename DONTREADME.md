@@ -72,7 +72,7 @@ The `devenv.nix` file has got all the scripts you need.
 
 1. Install direnv on your remote machine.
 
-1. Run the following commands in your remote machine's home directory:
+1. Run the following commands on your remote machine:
 
    ```sh
    cd
