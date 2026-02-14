@@ -36,11 +36,11 @@ The goal is to stay under $1,000.
 
 ## Setup
 
-> How do I set up the development environment?
+> How do I set up the local development environment?
 
-1. Install [devenv](https://github.com/cachix/devenv/blob/c6267b9343bbc96c88038765d02e2a2ad2a3b8a0/docs/src/getting-started.md#installation).
+1. Install [devenv](https://github.com/cachix/devenv/blob/aa22abe84c3b8f7b0a40b7aac018c080ad8bac14/docs/src/getting-started.md#installation).
 
-1. Install [direnv](https://github.com/cachix/devenv/blob/c6267b9343bbc96c88038765d02e2a2ad2a3b8a0/docs/src/automatic-shell-activation.md#installing-direnv).
+1. Install [direnv](https://github.com/cachix/devenv/blob/aa22abe84c3b8f7b0a40b7aac018c080ad8bac14/docs/src/integrations/direnv.md#installing-direnv).
 
 1. Run the following commands:
 
@@ -51,6 +51,37 @@ The goal is to stay under $1,000.
    ```
 
 The `devenv.nix` file has got all the scripts you need.
+
+> How do I set up the remote development environment?
+
+1. Install [devenv](https://github.com/cachix/devenv/blob/aa22abe84c3b8f7b0a40b7aac018c080ad8bac14/docs/src/getting-started.md#installation) on your local machine.
+
+1. Install [direnv](https://github.com/cachix/devenv/blob/aa22abe84c3b8f7b0a40b7aac018c080ad8bac14/docs/src/integrations/direnv.md#installing-direnv) on your local machine.
+
+1. Run the following commands on your local machine:
+
+   ```sh
+   git clone git@github.com:8ta4/cue.git
+   cd cue
+   direnv allow
+   ```
+
+1. Make sure `ssh cue` logs you in to your remote machine.
+
+1. Install devenv on your remote machine.
+
+1. Install direnv on your remote machine.
+
+1. Run the following commands in your remote machine's home directory:
+
+   ```sh
+   cd
+   git clone git@github.com:8ta4/cue.git
+   cd cue
+   direnv allow
+   ```
+
+Now you can start the remote nREPL and port forwarding by running `devenv up` on your local machine.
 
 ## Search
 
