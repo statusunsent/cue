@@ -1,7 +1,9 @@
 {
   "calva.replConnectSequences": [
     {
+      "autoSelectForConnect": true,
       "autoSelectForJackIn": true,
+      "menuSelections": { "cljAliases": [] },
       "name": "cue",
       "projectRootPath": ["."],
       "projectType": "deps.edn"

@@ -1,22 +1,22 @@
 {
   pkgs,
-  lib,
-  config,
-  inputs,
   ...
 }:
 
 {
   # https://devenv.sh/basics/
   env.GREET = "devenv";
+  env.PORT = 7888;
 
   # https://devenv.sh/packages/
   packages = [
+    pkgs.fswatch
     pkgs.git
     pkgs.gitleaks
     pkgs.nil
     pkgs.pre-commit
     pkgs.python313Packages.pre-commit-hooks
+    pkgs.rsync
   ];
 
   # https://devenv.sh/languages/
@@ -30,14 +30,29 @@
 
   # https://devenv.sh/processes/
   # processes.dev.exec = "${lib.getExe pkgs.watchexec} -n -- ls -la";
+  processes = {
+    # Without `-tt`, the remote nREPL server survives the SSH exit,
+    # leading to "Address already in use" errors on subsequent runs.
+    nrepl.exec = ''
+      echo $PORT > .nrepl-port && ssh -L "$PORT":localhost:"$PORT" -tt cue "cd cue && devenv shell clojure -M:nrepl -p $PORT"
+    '';
+    watch.exec = ''
+      upload && fswatch -o . | xargs -I _ upload
+    '';
+  };
 
   # https://devenv.sh/services/
   # services.postgres.enable = true;
 
   # https://devenv.sh/scripts/
-  scripts.hello.exec = ''
-    echo hello from $GREET
-  '';
+  scripts = {
+    upload.exec = ''
+      rsync -avz --exclude-from .gitignore --del --exclude .git . cue:~/cue
+    '';
+    hello.exec = ''
+      echo hello from $GREET
+    '';
+  };
 
   # https://devenv.sh/basics/
   enterShell = ''
