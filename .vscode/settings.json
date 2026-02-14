@@ -1,6 +1,7 @@
 {
   "calva.replConnectSequences": [
     {
+      "autoSelectForConnect": true,
       "autoSelectForJackIn": true,
       "name": "cue",
       "projectRootPath": ["."],
