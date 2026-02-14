@@ -31,6 +31,8 @@
   # https://devenv.sh/processes/
   # processes.dev.exec = "${lib.getExe pkgs.watchexec} -n -- ls -la";
   processes = {
+    # Without `-tt`, the remote nREPL server survives the SSH exit,
+    # leading to "Address already in use" errors on subsequent runs.
     nrepl.exec = ''
       echo $PORT > .nrepl-port && ssh -L "$PORT":localhost:"$PORT" -tt cue "cd cue && devenv shell clojure -M:nrepl -p $PORT"
     '';
