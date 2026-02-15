@@ -12,7 +12,7 @@
 
 (from-import builtins slice)
 
-(from-import torch nn no_grad nonzero tensor)
+(from-import torch inference_mode nn nonzero tensor)
 
 (from-import transformers AutoModelForCausalLM AutoTokenizer)
 
@@ -67,7 +67,7 @@
   [token-sequences]
   (py.. nn
         -functional
-        (log_softmax (get-item (py.. (with [_ (no_grad)]
+        (log_softmax (get-item (py.. (with [_ (inference_mode)]
                                            (model (prepare-batch-tensor token-sequences) (prepare-mask-tensor token-sequences)))
                                      -logits)
                                [(slice nil) -1 (slice nil)]))))
