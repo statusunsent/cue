@@ -12,7 +12,7 @@
 
 (from-import builtins slice)
 
-(from-import torch inference_mode nn nonzero tensor)
+(from-import torch cuda device inference_mode nn nonzero tensor)
 
 (from-import transformers AutoModelForCausalLM AutoTokenizer)
 
@@ -46,6 +46,11 @@
 (def max-count
   (comp (partial apply max)
         (partial map count)))
+
+(def device*
+  (device (if ($a cuda is_available)
+            "cuda"
+            "cpu")))
 
 (def tensor*
   (comp tensor ->py-list))
