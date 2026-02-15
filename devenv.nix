@@ -40,7 +40,7 @@
       ssh -L "$PORT":localhost:"$PORT" -tt cue \
       "cd cue && \
       devenv shell \
-      nix --extra-experimental-features 'nix-command flakes' run --impure github:nix-community/nixGL -- \
+      nix --extra-experimental-features 'nix-command flakes' run --impure github:nix-community/nixGL --override-input nixpkgs nixpkgs/nixos-25.11 -- \
       clojure -M:nrepl -p $PORT"
     '';
     watch.exec = ''
