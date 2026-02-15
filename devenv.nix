@@ -7,6 +7,7 @@
   # https://devenv.sh/basics/
   env.GREET = "devenv";
   env.PORT = 7888;
+  env.NIXPKGS_ALLOW_UNFREE = 1;
 
   # https://devenv.sh/packages/
   packages = [
@@ -34,7 +35,7 @@
     # Without `-tt`, the remote nREPL server survives the SSH exit,
     # leading to "Address already in use" errors on subsequent runs.
     nrepl.exec = ''
-      echo $PORT > .nrepl-port && ssh -L "$PORT":localhost:"$PORT" -tt cue "cd cue && devenv shell clojure -M:nrepl -p $PORT"
+      echo $PORT > .nrepl-port && ssh -L "$PORT":localhost:"$PORT" -tt cue "cd cue && devenv shell nix --extra-experimental-features 'nix-command flakes' run --impure github:nix-community/nixGL -- clojure -M:nrepl -p $PORT"
     '';
     watch.exec = ''
       upload && fswatch -o . | xargs -I _ upload
