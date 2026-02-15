@@ -76,7 +76,7 @@ The `devenv.nix` file has got all the scripts you need.
 
    ```sh
    cd
-   git clone git@github.com:8ta4/cue.git
+   git clone https://github.com/8ta4/cue
    cd cue
    direnv allow
    ```
