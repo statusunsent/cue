@@ -41,7 +41,10 @@
       ssh -L "$PORT":localhost:"$PORT" -tt cue \
       "cd cue && \
       devenv shell \
-      nix --extra-experimental-features 'nix-command flakes' run --impure github:nix-community/nixGL --override-input nixpkgs github:NixOS/nixpkgs/$(jq -r .nodes.nixpkgs.locked.rev devenv.lock) -- \
+      nix --extra-experimental-features 'nix-command flakes' \
+      run --impure \
+      --override-input nixpkgs github:NixOS/nixpkgs/$(jq -r .nodes.nixpkgs.locked.rev devenv.lock) \
+      github:nix-community/nixGL -- \
       clojure -M:nrepl -p $PORT"
     '';
     watch.exec = ''
