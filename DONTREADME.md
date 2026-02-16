@@ -177,15 +177,15 @@ No. The goal is a realistic training set. Conversation is full of sentences that
 
 > Can a search run finish on its own?
 
-Yes. The search is guided by a likelihood threshold. This threshold is the minimum score a sentence needs from the model to make it into the results. A run finishes on its own once it's found every sentence that makes the cut.
+Yes. The search is guided by a likelihood threshold. This threshold is the minimum score a sentence needs from the model to make it into the results.
 
-The threshold is controlled by the `exponent` constant. The formula is:
+The formula is:
 
 $$
-P(\text{completion} | \text{prompt}) \ge 10^{-\text{exponent}}
+P(\text{completion} | \text{prompt}) \ge e^{\text{threshold}}
 $$
 
-For example, an `exponent` of 3 keeps only completions the model thinks have at least a one-in-a-thousand chance given the prompt.
+A run finishes on its own once it's found every sentence that makes the cut.
 
 ## Deduplication
 
