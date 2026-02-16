@@ -22,8 +22,17 @@
 (def tokenizer
   ($a AutoTokenizer from_pretrained model-name))
 
+(def device*
+  (device (if ($a cuda is_available)
+            "cuda"
+            "cpu")))
+
+(defn allocate-device
+  [x]
+  ($a x to device*))
+
 (def model
-  ($a AutoModelForCausalLM from_pretrained model-name))
+  (allocate-device ($a AutoModelForCausalLM from_pretrained model-name)))
 
 (def prompt
   "She's like, \"")
@@ -47,13 +56,8 @@
   (comp (partial apply max)
         (partial map count)))
 
-(def device*
-  (device (if ($a cuda is_available)
-            "cuda"
-            "cpu")))
-
 (def tensor*
-  (comp tensor ->py-list))
+  (comp allocate-device tensor ->py-list))
 
 (defn prepare-batch-tensor
   [token-sequences]
