@@ -14,6 +14,7 @@
     pkgs.fswatch
     pkgs.git
     pkgs.gitleaks
+    pkgs.jq
     pkgs.nil
     pkgs.pre-commit
     pkgs.python313Packages.pre-commit-hooks
@@ -40,7 +41,7 @@
       ssh -L "$PORT":localhost:"$PORT" -tt cue \
       "cd cue && \
       devenv shell \
-      nix --extra-experimental-features 'nix-command flakes' run --impure github:nix-community/nixGL --override-input nixpkgs nixpkgs/nixos-25.11 -- \
+      nix --extra-experimental-features 'nix-command flakes' run --impure github:nix-community/nixGL --override-input nixpkgs github:NixOS/nixpkgs/$(jq -r .nodes.nixpkgs.locked.rev devenv.lock) -- \
       clojure -M:nrepl -p $PORT"
     '';
     watch.exec = ''
