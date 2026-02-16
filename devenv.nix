@@ -54,11 +54,11 @@
 
   # https://devenv.sh/scripts/
   scripts = {
-    upload.exec = ''
-      rsync -avz --exclude-from .gitignore --del --exclude .git . cue:~/cue
-    '';
     hello.exec = ''
       echo hello from $GREET
+    '';
+    upload.exec = ''
+      rsync -avz --exclude-from .gitignore --del --exclude .git . cue:~/cue
     '';
   };
 
