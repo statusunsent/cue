@@ -177,7 +177,7 @@ No. The goal is a realistic training set. Conversation is full of sentences that
 
 > Can a search run finish on its own?
 
-Yes. The search is guided by a likelihood threshold. This threshold is the minimum score a sentence needs from the model to make it into the results.
+Yes. The search is guided by a log-likelihood threshold. This threshold is the minimum score a sentence needs from the model to make it into the results.
 
 The formula is:
 
