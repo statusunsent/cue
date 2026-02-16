@@ -187,6 +187,14 @@ $$
 
 A run finishes on its own once it's found every sentence that makes the cut.
 
+If you stop the run early, you can still see how far the search got. While it's running, `cue` keeps writing a single number to `data/guarantee`. This number is the guarantee.
+
+Any completion with a higher score than the guarantee has already been considered:
+
+$$
+P(\text{completion} | \text{prompt}) \ge e^{\text{guarantee}}
+$$
+
 ## Deduplication
 
 > How do I deduplicate candidates?
