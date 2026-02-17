@@ -1,6 +1,6 @@
 (ns core
   (:require
-   [babashka.fs :refer [create-dirs file]]
+   [babashka.fs :refer [create-dirs create-temp-file file move]]
    [clojure.data.priority-map :refer [priority-map-by]]
    [clojure.math :refer [log]]
    [clojure.string :refer [includes? join]]
@@ -140,6 +140,13 @@
                                           (partial map decode*))))
                     {:append? true})
     (expand-node* prefix-sequence prefix-likelihood predictions (remove stop-tokens surviving-tokens))))
+
+(defn spit*
+  [f content]
+  (let [bar (create-temp-file)]
+    (spit (file bar) content)
+    (move bar f {:replace-existing true
+                 :atomic-move true})))
 
 (defn search-step
   [m]
