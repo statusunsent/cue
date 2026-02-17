@@ -148,8 +148,14 @@
     (move bar f {:replace-existing true
                  :atomic-move true})))
 
+(def guarantee-file
+  (file data-directory "guarantee"))
+
 (defn search-step
   [m]
+  (spit* guarantee-file (if (empty? m)
+                          threshold
+                          (last (first m))))
   (when-not (empty? m)
     (->> m
          (take batch-size)
