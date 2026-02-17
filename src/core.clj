@@ -1,7 +1,7 @@
 (ns core
   (:require
+   [babashka.fs :refer [create-dirs create-temp-file file move]]
    [clojure.data.priority-map :refer [priority-map-by]]
-   [clojure.java.io :refer [file make-parents]]
    [clojure.math :refer [log]]
    [clojure.string :refer [includes? join]]
    [com.rpl.specter :refer [AFTER-ELEM ALL BEGINNING FIRST setval transform]]
@@ -141,8 +141,21 @@
                     {:append? true})
     (expand-node* prefix-sequence prefix-likelihood predictions (remove stop-tokens surviving-tokens))))
 
+(defn spit*
+  [f content]
+  (let [bar (create-temp-file)]
+    (spit (file bar) content)
+    (move bar f {:replace-existing true
+                 :atomic-move true})))
+
+(def guarantee-file
+  (file data-directory "guarantee"))
+
 (defn search-step
   [m]
+  (spit* guarantee-file (if (empty? m)
+                          threshold
+                          (last (first m))))
   (when-not (empty? m)
     (->> m
          (take batch-size)
@@ -154,5 +167,5 @@
 
 (defn -main
   []
-  (make-parents candidates-file)
+  (create-dirs data-directory)
   (search-step (priority-map-by > ($a tokenizer encode prompt) 0)))
