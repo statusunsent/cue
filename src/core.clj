@@ -1,7 +1,7 @@
 (ns core
   (:require
+   [babashka.fs :refer [create-dirs file]]
    [clojure.data.priority-map :refer [priority-map-by]]
-   [clojure.java.io :refer [file make-parents]]
    [clojure.math :refer [log]]
    [clojure.string :refer [includes? join]]
    [com.rpl.specter :refer [AFTER-ELEM ALL BEGINNING FIRST setval transform]]
@@ -154,5 +154,5 @@
 
 (defn -main
   []
-  (make-parents candidates-file)
+  (create-dirs data-directory)
   (search-step (priority-map-by > ($a tokenizer encode prompt) 0)))
