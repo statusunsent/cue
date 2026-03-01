@@ -90,7 +90,7 @@ Now you can start the remote nREPL and port forwarding by running `devenv up` on
 You run a search with the `candidates` command.
 
 ```sh
-clj -M -m core candidates
+clj -M:prod -m core candidates
 ```
 
 This finds sentences and saves them to `data/candidates.ednl`.
