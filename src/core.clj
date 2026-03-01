@@ -168,7 +168,13 @@
          (into (pop-n (:batch-size config) m))
          recur)))
 
-(defn -main
+(defn cues
   []
   (create-dirs data-directory)
   (search-step (priority-map-by > ($a tokenizer encode prompt) 0)))
+
+(defn -main
+  [command]
+  (case command
+    "cues" (cues)
+    (println "Invalid command.")))
