@@ -25,9 +25,6 @@
      :exponent 1
      :batch-size 2}))
 
-(def model-name
-  "Qwen/Qwen3-0.6B-Base")
-
 (def tokenizer
   ($a AutoTokenizer from_pretrained (:model-name config)))
 
