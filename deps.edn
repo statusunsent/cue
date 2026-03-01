@@ -1,5 +1,6 @@
 {:aliases
- {:nrepl {:extra-deps {cider/cider-nrepl {:mvn/version,"0.58.0"}
+ {:prod {:jvm-opts ["-Dprod"]}
+  :nrepl {:extra-deps {cider/cider-nrepl {:mvn/version,"0.58.0"}
                        nrepl/nrepl {:mvn/version "1.5.2"}}
           :main-opts ["-m" "nrepl.cmdline"]}}
  :deps {babashka/fs {:mvn/version "0.5.31"}

@@ -16,11 +16,20 @@
 
 (from-import transformers AutoModelForCausalLM AutoTokenizer)
 
+(def config
+  (if (System/getProperty "prod")
+    {:model-name "Qwen/Qwen3-30B-A3B-Base"
+     :exponent 2
+     :batch-size 4}
+    {:model-name "Qwen/Qwen3-0.6B-Base"
+     :exponent 1
+     :batch-size 2}))
+
 (def model-name
   "Qwen/Qwen3-0.6B-Base")
 
 (def tokenizer
-  ($a AutoTokenizer from_pretrained model-name))
+  ($a AutoTokenizer from_pretrained (:model-name config)))
 
 (def device*
   (device (if ($a cuda is_available)
@@ -32,16 +41,13 @@
   ($a x to device*))
 
 (def model
-  (allocate-device ($a AutoModelForCausalLM from_pretrained model-name)))
+  (allocate-device ($a AutoModelForCausalLM from_pretrained (:model-name config))))
 
 (def prompt
   "She's like, \"")
 
-(def exponent
-  1)
-
 (def threshold
-  (- (* exponent (log 10))))
+  (- (* (:exponent config) (log 10))))
 
 (defn pop-n
   [n coll]
@@ -108,9 +114,6 @@
 (def fragment-tokens
   (set (map last (filter (comp fragment? first) vocab))))
 
-(def batch-size
-  2)
-
 (def data-directory
   "data")
 
@@ -158,11 +161,11 @@
                           (last (first m))))
   (when-not (empty? m)
     (->> m
-         (take batch-size)
+         (take (:batch-size config))
          (map first)
          predict
-         (mapcat expand-node (take batch-size m))
-         (into (pop-n batch-size m))
+         (mapcat expand-node (take (:batch-size config) m))
+         (into (pop-n (:batch-size config) m))
          recur)))
 
 (defn -main
