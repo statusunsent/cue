@@ -110,4 +110,9 @@
   };
 
   # See full reference at https://devenv.sh/reference/options/
+  profiles = {
+    prod.module = {
+      processes.nrepl.enable = false;
+    };
+  };
 }
