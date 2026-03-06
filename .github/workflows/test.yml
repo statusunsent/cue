@@ -9,6 +9,7 @@ jobs:
   tests:
     strategy:
       matrix:
+        # TODO: Expand matrix to include macos-15
         os: [ubuntu-24.04]
     runs-on: ${{ matrix.os }}
 
