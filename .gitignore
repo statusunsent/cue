@@ -27,6 +27,7 @@ pom.xml.asc
 
 ### cue
 data
+vendor
 
 ### Devenv
 .devenv*

@@ -6,8 +6,6 @@
 {
   # https://devenv.sh/basics/
   env.GREET = "devenv";
-  env.PORT = 7888;
-  env.NIXPKGS_ALLOW_UNFREE = 1;
 
   # https://devenv.sh/packages/
   packages = [
@@ -35,16 +33,11 @@
   processes = {
     # Without `-tt`, the remote nREPL server survives the SSH exit,
     # leading to "Address already in use" errors on subsequent runs.
-    # https://github.com/nix-community/nixGL/blob/b6105297e6f0cd041670c3e8628394d4ee247ed5/README.md?plain=1#L93
     nrepl.exec = ''
       echo $PORT > .nrepl-port && \
       ssh -L "$PORT":localhost:"$PORT" -tt cue \
       "cd cue && \
       devenv shell \
-      nix --extra-experimental-features 'nix-command flakes' \
-      run --impure \
-      --override-input nixpkgs github:NixOS/nixpkgs/$(jq -r .nodes.nixpkgs.locked.rev devenv.lock) \
-      github:nix-community/nixGL -- \
       clojure -M:nrepl -p $PORT"
     '';
     watch.exec = ''
@@ -71,6 +64,8 @@
     git --version # Use packages
     # https://github.com/astral-sh/uv/blob/cd4973623485aeda775d2721dddd95c269fa131b/docs/guides/projects.md?plain=1#L237
     source .devenv/state/venv/bin/activate
+    export PORT=7888;
+    export LD_LIBRARY_PATH="$DEVENV_ROOT/vendor":"$LD_LIBRARY_PATH"
   '';
 
   # https://devenv.sh/tasks/
