@@ -6,7 +6,6 @@
 {
   # https://devenv.sh/basics/
   env.GREET = "devenv";
-  env.PORT = 7888;
 
   # https://devenv.sh/packages/
   packages = [
@@ -65,6 +64,8 @@
     git --version # Use packages
     # https://github.com/astral-sh/uv/blob/cd4973623485aeda775d2721dddd95c269fa131b/docs/guides/projects.md?plain=1#L237
     source .devenv/state/venv/bin/activate
+    export PORT=7888;
+    export LD_LIBRARY_PATH="$DEVENV_ROOT/vendor":"$LD_LIBRARY_PATH"
   '';
 
   # https://devenv.sh/tasks/
