@@ -10,6 +10,9 @@
    [libpython-clj2.python :refer [$a ->py-list from-import get-item
                                   initialize! py.. with]]))
 
+; Enable CUDA support by exposing host NVIDIA drivers.
+; We link specific driver files to a dedicated directory rather than using the system path
+; to avoid conflicts.
 (def vendor
   "vendor")
 
