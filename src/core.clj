@@ -110,7 +110,10 @@
   (py.. nn
         -functional
         (log_softmax (get-item (py.. (with [_ (inference_mode)]
-                                           (model (prepare-batch-tensor token-sequences) (prepare-mask-tensor token-sequences)))
+                                           (model (prepare-batch-tensor token-sequences)
+                                                  (prepare-mask-tensor token-sequences)
+                                                  :use_cache false
+                                                  :logits_to_keep 1))
                                      -logits)
                                [(slice nil) -1 (slice nil)]))))
 
