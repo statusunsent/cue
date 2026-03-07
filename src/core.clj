@@ -1,7 +1,6 @@
 (ns core
   (:require
-   [babashka.fs :refer [create-dirs create-sym-link create-temp-file
-                        delete-if-exists exists? file move]]
+   [babashka.fs :refer [create-dirs create-temp-file file move]]
    [clojure.data.priority-map :refer [priority-map-by]]
    [clojure.math :refer [log]]
    [clojure.string :refer [includes? join]]
@@ -9,34 +8,6 @@
    [lambdaisland.edn-lines :as edn-lines]
    [libpython-clj2.python :refer [$a ->py-list from-import get-item
                                   initialize! py.. with]]))
-
-; Enable CUDA support by exposing host NVIDIA drivers.
-; We link specific driver files to a dedicated directory rather than using the system path
-; to avoid conflicts.
-(def vendor
-  "vendor")
-
-(create-dirs vendor)
-
-(def system-path
-  "/usr/lib/x86_64-linux-gnu")
-
-(def cuda-library-name
-  "libcuda.so.1")
-
-(def target-path
-  (file system-path cuda-library-name))
-
-(def link-path
-  (file vendor cuda-library-name))
-
-(defn force-symlink
-  [link target]
-  (delete-if-exists link)
-  (create-sym-link link target))
-
-(when (exists? target-path)
-  (force-symlink link-path target-path))
 
 (initialize!)
 
