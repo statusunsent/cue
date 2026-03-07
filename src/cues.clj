@@ -7,3 +7,6 @@
   (edn-lines/slurp candidates-file))
 
 (from-import sentence_transformers SentenceTransformer)
+
+(def model
+  (SentenceTransformer "Qwen/Qwen3-Embedding-0.6B"))

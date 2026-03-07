@@ -1,6 +1,9 @@
 (ns core
   (:require
-   [babashka.fs :refer [file]]))
+   [babashka.fs :refer [file]]
+   [libpython-clj2.python :refer [initialize!]]))
+
+(initialize!)
 
 (def data-directory
   "data")
