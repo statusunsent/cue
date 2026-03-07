@@ -1,4 +1,4 @@
-(ns core
+(ns candidates
   (:require
    [babashka.fs :refer [create-dirs create-temp-file file move]]
    [clojure.data.priority-map :refer [priority-map-by]]
@@ -169,13 +169,7 @@
          (into (pop-n (:batch-size config) m))
          recur)))
 
-(defn candidates
+(defn -main
   []
   (create-dirs data-directory)
   (search-step (priority-map-by > [] 0)))
-
-(defn -main
-  [command]
-  (case command
-    "candidates" (candidates)
-    (println "Invalid command.")))
