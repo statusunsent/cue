@@ -3,9 +3,6 @@
             [lambdaisland.edn-lines :as edn-lines]
             [libpython-clj2.python :refer [$a ->py-list from-import]]))
 
-(def candidates
-  (edn-lines/slurp candidates-file))
-
 (from-import sentence_transformers SentenceTransformer)
 
 (from-import torch cuda device inference_mode nn nonzero tensor)
@@ -17,3 +14,12 @@
 
 (def model
   (SentenceTransformer "Qwen/Qwen3-Embedding-0.6B" :device device*))
+
+(defn load-candidates
+  []
+  (edn-lines/slurp candidates-file))
+
+(defn -main
+  []
+  (let [candidates (load-candidates)]
+    ($a model encode (->py-list (map first candidates)))))
