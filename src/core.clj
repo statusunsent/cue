@@ -63,12 +63,8 @@
             "cuda"
             "cpu")))
 
-(defn allocate-device
-  [x]
-  ($a x to device*))
-
 (def model
-  (allocate-device ($a AutoModelForCausalLM from_pretrained (:model-name config))))
+  ($a AutoModelForCausalLM from_pretrained (:model-name config) :device_map device*))
 
 (def prompt
   "She's like, \"")
@@ -90,7 +86,7 @@
         (partial map count)))
 
 (def tensor*
-  (comp allocate-device tensor ->py-list))
+  (comp #($a % to device*) tensor ->py-list))
 
 (defn prepare-batch-tensor
   [token-sequences]
