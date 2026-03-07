@@ -21,6 +21,7 @@
   (if (System/getProperty "prod")
     {:model-name "Qwen/Qwen3-30B-A3B-Base"
      :exponent 6
+; Using the smallest power‑of‑two batch size that achieves 100% utilization on the NVIDIA H100 GPU
      :batch-size 256}
     {:model-name "Qwen/Qwen3-0.6B-Base"
      :exponent 1
