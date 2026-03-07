@@ -41,6 +41,9 @@
 (def prompt
   "She's like, \"")
 
+(def prompt-tokens
+  ($a tokenizer encode prompt))
+
 (def threshold
   (- (* (:exponent config) (log 10))))
 
@@ -160,7 +163,7 @@
   (when-not (empty? m)
     (->> m
          (take (:batch-size config))
-         (map first)
+         (map (comp (partial concat prompt-tokens) first))
          predict
          (mapcat expand-node (take (:batch-size config) m))
          (into (pop-n (:batch-size config) m))
@@ -169,7 +172,7 @@
 (defn candidates
   []
   (create-dirs data-directory)
-  (search-step (priority-map-by > ($a tokenizer encode prompt) 0)))
+  (search-step (priority-map-by > [] 0)))
 
 (defn -main
   [command]
