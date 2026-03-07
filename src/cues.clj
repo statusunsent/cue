@@ -21,5 +21,6 @@
 
 (defn -main
   []
-  (let [candidates (load-candidates)]
-    ($a model encode (->py-list (map first candidates)))))
+  (let [candidates (load-candidates)
+        embeddings ($a model encode (->py-list (map first candidates)))]
+    ($a model similarity embeddings embeddings)))
