@@ -20,8 +20,8 @@
 (def config
   (if (System/getProperty "prod")
     {:model-name "Qwen/Qwen3-30B-A3B-Base"
-     :exponent 2
-     :batch-size 4}
+     :exponent 6
+     :batch-size 256}
     {:model-name "Qwen/Qwen3-0.6B-Base"
      :exponent 1
      :batch-size 2}))
