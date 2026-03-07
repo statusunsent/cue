@@ -5,6 +5,7 @@
    [clojure.math :refer [log]]
    [clojure.string :refer [includes? join]]
    [com.rpl.specter :refer [AFTER-ELEM ALL BEGINNING FIRST setval transform]]
+   [core :refer [candidates-file data-directory]]
    [lambdaisland.edn-lines :as edn-lines]
    [libpython-clj2.python :refer [$a ->py-list from-import get-item
                                   initialize! py.. with]]))
@@ -114,12 +115,6 @@
 
 (def fragment-tokens
   (set (map last (filter (comp fragment? first) vocab))))
-
-(def data-directory
-  "data")
-
-(def candidates-file
-  (file data-directory "candidates.ednl"))
 
 (defn expand-node*
   [prefix-sequence prefix-likelihood predictions surviving-tokens]
