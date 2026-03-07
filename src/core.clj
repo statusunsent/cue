@@ -176,10 +176,10 @@
 
 (defn spit*
   [f content]
-  (let [bar (create-temp-file)]
-    (spit (file bar) content)
-    (move bar f {:replace-existing true
-                 :atomic-move true})))
+  (let [temp-file-path (create-temp-file)]
+    (spit (file temp-file-path) content)
+    (move temp-file-path f {:replace-existing true
+                            :atomic-move true})))
 
 (def guarantee-file
   (file data-directory "guarantee"))
