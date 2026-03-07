@@ -64,8 +64,12 @@
     git --version # Use packages
     # https://github.com/astral-sh/uv/blob/cd4973623485aeda775d2721dddd95c269fa131b/docs/guides/projects.md?plain=1#L237
     source .devenv/state/venv/bin/activate
+    # Enable CUDA support by exposing host NVIDIA drivers.
+    # We link specific driver files to a dedicated directory rather than using the system path to avoid conflicts.
+    mkdir -p "$DEVENV_ROOT"/vendor
+    ln -fs /usr/lib/x86_64-linux-gnu/libcuda.so.1 "$DEVENV_ROOT"/vendor/libcuda.so.1
+    export LD_LIBRARY_PATH="$DEVENV_ROOT"/vendor:"$LD_LIBRARY_PATH"
     export PORT=7888;
-    export LD_LIBRARY_PATH="$DEVENV_ROOT/vendor":"$LD_LIBRARY_PATH"
   '';
 
   # https://devenv.sh/tasks/
