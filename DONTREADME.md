@@ -90,7 +90,7 @@ Now you can start the remote nREPL and port forwarding by running `devenv up` on
 You run a search with the `candidates` command.
 
 ```sh
-clj -M:prod -m core candidates
+clj -M:prod -m candidates
 ```
 
 This finds sentences and saves them to `data/candidates.ednl`.
@@ -202,7 +202,7 @@ $$
 You deduplicate the candidates with the `cues` command.
 
 ```sh
-clj -M -m core cues
+clj -M:prod -m cues
 ```
 
 This deduplicates the candidates, ranks them, and saves the results to `data/cues.csv`.
