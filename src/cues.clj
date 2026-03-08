@@ -19,8 +19,11 @@
   []
   (edn-lines/slurp candidates-file))
 
+(def threshold
+  0.9)
+
 (defn -main
   []
   (let [candidates (load-candidates)
         embeddings ($a model encode (->py-list (map first candidates)))]
-    ($a model similarity embeddings embeddings)))
+    ($a ($a model similarity embeddings embeddings) ge threshold)))
