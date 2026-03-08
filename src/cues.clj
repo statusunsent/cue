@@ -5,6 +5,8 @@
 
 (from-import sentence_transformers SentenceTransformer)
 
+(from-import scipy.sparse.csgraph connected_components)
+
 (from-import torch cuda device inference_mode nn nonzero tensor)
 
 (def device*
@@ -26,4 +28,4 @@
   []
   (let [candidates (load-candidates)
         embeddings ($a model encode (->py-list (map first candidates)))]
-    ($a ($a model similarity embeddings embeddings) ge threshold)))
+    (last (connected_components ($a ($a model similarity embeddings embeddings) ge threshold)))))
