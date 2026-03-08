@@ -28,4 +28,10 @@
   []
   (let [candidates (load-candidates)
         embeddings ($a model encode (->py-list (map first candidates)))]
-    (vals (group-by (zipmap candidates (last (connected_components ($a ($a model similarity embeddings embeddings) ge threshold)))) candidates))))
+    (->> candidates
+         (group-by (->> ($a ($a model similarity embeddings embeddings) ge threshold)
+                        connected_components
+                        last
+                        (zipmap candidates)))
+         vals
+         (map (partial apply max-key last)))))
