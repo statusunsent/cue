@@ -207,6 +207,8 @@ clj -M:prod -m cues
 
 This deduplicates the candidates, ranks them, and saves the results to `data/cues.csv`.
 
+I use CSV because the final output is meant for humans to read in a spreadsheet.
+
 > What model does `cue` use to deduplicate sentences?
 
 `cue` uses [`Qwen3-Embedding-8B`](https://huggingface.co/Qwen/Qwen3-Embedding-8B). This is the highest-ranking model on the MTEB STS benchmark that includes [a public evaluation methodology](https://github.com/QwenLM/Qwen3-Embedding/blob/44548aa5f0a0aed1c76d64e19afe47727a325b8f/README.md#evaluation).
