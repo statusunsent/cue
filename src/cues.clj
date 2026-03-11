@@ -18,8 +18,13 @@
             "cuda"
             "cpu")))
 
+(def model-name
+  (if (System/getProperty "prod")
+    "Qwen/Qwen3-Embedding-8B"
+    "Qwen/Qwen3-Embedding-0.6B"))
+
 (def model
-  (SentenceTransformer "Qwen/Qwen3-Embedding-0.6B" :device device*))
+  (SentenceTransformer model-name :device device*))
 
 (defn load-candidates
   []
@@ -28,9 +33,14 @@
 (def threshold
   0.9)
 
+(def prompt
+  ; https://github.com/QwenLM/Qwen3-Embedding/blob/44548aa5f0a0aed1c76d64e19afe47727a325b8f/evaluation/run_mteb.sh#L14
+  ; https://github.com/QwenLM/Qwen3-Embedding/blob/44548aa5f0a0aed1c76d64e19afe47727a325b8f/evaluation/qwen3_embedding_model.py#L235
+  "Instruct: Retrieve semantically similar text\nQuery:")
+
 (defn collapse
   [candidates]
-  (let [embeddings ($a model encode (->py-list (map first candidates)))]
+  (let [embeddings ($a model encode (->py-list (map first candidates)) :prompt prompt)]
     (->> candidates
          (group-by (->> ($a ($a model similarity embeddings embeddings) ge threshold)
                         connected_components
