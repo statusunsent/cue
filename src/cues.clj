@@ -1,7 +1,11 @@
 (ns cues
-  (:require [core :refer [candidates-file]]
-            [lambdaisland.edn-lines :as edn-lines]
-            [libpython-clj2.python :refer [$a ->py-list from-import]]))
+  (:require
+   [babashka.fs :refer [file]]
+   [charred.api :refer [write-csv]]
+   [com.rpl.specter :refer [BEFORE-ELEM setval]]
+   [core :refer [candidates-file data-directory]]
+   [lambdaisland.edn-lines :as edn-lines]
+   [libpython-clj2.python :refer [$a ->py-list from-import]]))
 
 (from-import sentence_transformers SentenceTransformer)
 
@@ -24,10 +28,9 @@
 (def threshold
   0.9)
 
-(defn -main
-  []
-  (let [candidates (load-candidates)
-        embeddings ($a model encode (->py-list (map first candidates)))]
+(defn collapse
+  [candidates]
+  (let [embeddings ($a model encode (->py-list (map first candidates)))]
     (->> candidates
          (group-by (->> ($a ($a model similarity embeddings embeddings) ge threshold)
                         connected_components
@@ -35,3 +38,11 @@
                         (zipmap candidates)))
          vals
          (map (partial apply max-key last)))))
+
+(def cues-file
+  (file data-directory "cues.csv"))
+
+(defn -main
+  []
+  (write-csv cues-file (setval BEFORE-ELEM ["sentence" "likelihood"] (collapse (load-candidates)))
+             :close-writer? true))
