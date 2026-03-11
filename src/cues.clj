@@ -1,7 +1,9 @@
 (ns cues
-  (:require [core :refer [candidates-file]]
-            [lambdaisland.edn-lines :as edn-lines]
-            [libpython-clj2.python :refer [$a ->py-list from-import]]))
+  (:require
+   [com.rpl.specter :refer [setval BEFORE-ELEM]]
+   [core :refer [candidates-file]]
+   [lambdaisland.edn-lines :as edn-lines]
+   [libpython-clj2.python :refer [$a ->py-list from-import]]))
 
 (from-import sentence_transformers SentenceTransformer)
 
@@ -37,4 +39,4 @@
 
 (defn -main
   []
-  (collapse (load-candidates)))
+  (setval BEFORE-ELEM ["sentence" "likelihood"] (collapse (load-candidates))))
