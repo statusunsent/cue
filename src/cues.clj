@@ -18,8 +18,13 @@
             "cuda"
             "cpu")))
 
+(def model-name
+  (if (System/getProperty "prod")
+    "Qwen/Qwen3-Embedding-8B"
+    "Qwen/Qwen3-Embedding-0.6B"))
+
 (def model
-  (SentenceTransformer "Qwen/Qwen3-Embedding-0.6B" :device device*))
+  (SentenceTransformer model-name :device device*))
 
 (defn load-candidates
   []
