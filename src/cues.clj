@@ -28,9 +28,12 @@
 (def threshold
   0.9)
 
+(def prompt
+  "Instruct: Retrieve semantically similar text\nQuery:")
+
 (defn collapse
   [candidates]
-  (let [embeddings ($a model encode (->py-list (map first candidates)))]
+  (let [embeddings ($a model encode (->py-list (map first candidates)) :prompt prompt)]
     (->> candidates
          (group-by (->> ($a ($a model similarity embeddings embeddings) ge threshold)
                         connected_components
