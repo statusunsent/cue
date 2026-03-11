@@ -29,6 +29,8 @@
   0.9)
 
 (def prompt
+  ; https://github.com/QwenLM/Qwen3-Embedding/blob/44548aa5f0a0aed1c76d64e19afe47727a325b8f/evaluation/run_mteb.sh#L14
+  ; https://github.com/QwenLM/Qwen3-Embedding/blob/44548aa5f0a0aed1c76d64e19afe47727a325b8f/evaluation/qwen3_embedding_model.py#L235
   "Instruct: Retrieve semantically similar text\nQuery:")
 
 (defn collapse
