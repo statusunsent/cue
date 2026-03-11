@@ -24,10 +24,9 @@
 (def threshold
   0.9)
 
-(defn -main
-  []
-  (let [candidates (load-candidates)
-        embeddings ($a model encode (->py-list (map first candidates)))]
+(defn collapse
+  [candidates]
+  (let [embeddings ($a model encode (->py-list (map first candidates)))]
     (->> candidates
          (group-by (->> ($a ($a model similarity embeddings embeddings) ge threshold)
                         connected_components
@@ -35,3 +34,7 @@
                         (zipmap candidates)))
          vals
          (map (partial apply max-key last)))))
+
+(defn -main
+  []
+  (collapse (load-candidates)))
