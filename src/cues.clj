@@ -1,7 +1,9 @@
 (ns cues
   (:require
-   [com.rpl.specter :refer [setval BEFORE-ELEM]]
-   [core :refer [candidates-file]]
+   [babashka.fs :refer [file]]
+   [charred.api :refer [write-csv]]
+   [com.rpl.specter :refer [BEFORE-ELEM setval]]
+   [core :refer [candidates-file data-directory]]
    [lambdaisland.edn-lines :as edn-lines]
    [libpython-clj2.python :refer [$a ->py-list from-import]]))
 
@@ -37,6 +39,10 @@
          vals
          (map (partial apply max-key last)))))
 
+(def cues-file
+  (file data-directory "cues.csv"))
+
 (defn -main
   []
-  (setval BEFORE-ELEM ["sentence" "likelihood"] (collapse (load-candidates))))
+  (write-csv cues-file (setval BEFORE-ELEM ["sentence" "likelihood"] (collapse (load-candidates)))
+             :close-writer? true))
