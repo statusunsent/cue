@@ -84,7 +84,7 @@ Now you can start the remote nREPL and port forwarding by running `devenv up` on
 You run a search with the `candidates` command.
 
 ```sh
-clj -M -m candidates
+clj -M:prod -m candidates
 ```
 
 This finds sentences and saves them to `data/candidates.ednl`.
@@ -196,7 +196,7 @@ $$
 You clean up the candidates with the `cues` command.
 
 ```sh
-clj -M:prod -m cues
+clj -M -m cues
 ```
 
 This trims the candidates, filters the results, deduplicates the rest, ranks them, and saves them to `data/cues.csv`.
