@@ -16,12 +16,6 @@ A sentence's probability is the product of its token probabilities. In log space
 
 The mean would measure the average probability per token. That's a different calculation that introduces an artificial bias by normalizing for length.
 
-### Uniqueness
-
-> Can the pipeline deduplicate sentences?
-
-Yes. The pipeline groups sentences by their normalized form and picks the one with the highest likelihood score from each group.
-
 ### Quantity
 
 > How many sentences does the pipeline generate?
