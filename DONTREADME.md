@@ -211,6 +211,10 @@ Yes. When `cue` trims candidates, it drops everything after the first period. If
 
 Yes. `cue` filters out sentences whose trimmed form contains no letters or digits.
 
+> Does `cue` use semantic similarity to deduplicate sentences?
+
+No. `cue` doesn't use semantic similarity to deduplicate sentences. Two sentences can be similar in meaning and still differ in wording, and that difference in wording can change how you respond. So `cue` only deduplicates sentences that normalize to the same form.
+
 > Does `cue` deduplicate two sentences that differ only in capitalization?
 
 Yes. For deduplication, `cue` compares sentences by a normalized form. To build that form, `cue` casefolds each sentence, applies Unicode decomposition to the result, and removes non-alphanumeric characters.
