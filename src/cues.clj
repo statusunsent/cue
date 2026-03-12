@@ -4,55 +4,16 @@
    [charred.api :refer [write-csv]]
    [com.rpl.specter :refer [BEFORE-ELEM setval]]
    [core :refer [candidates-file data-directory]]
-   [lambdaisland.edn-lines :as edn-lines]
-   [libpython-clj2.python :refer [$a ->py-list from-import]]))
-
-(from-import sentence_transformers SentenceTransformer)
-
-(from-import scipy.sparse.csgraph connected_components)
-
-(from-import torch cuda device inference_mode nn nonzero tensor)
-
-(def device*
-  (device (if ($a cuda is_available)
-            "cuda"
-            "cpu")))
-
-(def model-name
-  (if (System/getProperty "prod")
-    "Qwen/Qwen3-Embedding-8B"
-    "Qwen/Qwen3-Embedding-0.6B"))
-
-(def model
-  (SentenceTransformer model-name :device device*))
+   [lambdaisland.edn-lines :as edn-lines]))
 
 (defn load-candidates
   []
   (edn-lines/slurp candidates-file))
-
-(def threshold
-  0.9)
-
-(def prompt
-  ; https://github.com/QwenLM/Qwen3-Embedding/blob/44548aa5f0a0aed1c76d64e19afe47727a325b8f/evaluation/run_mteb.sh#L14
-  ; https://github.com/QwenLM/Qwen3-Embedding/blob/44548aa5f0a0aed1c76d64e19afe47727a325b8f/evaluation/qwen3_embedding_model.py#L235
-  "Instruct: Retrieve semantically similar text\nQuery:")
-
-(defn collapse
-  [candidates]
-  (let [embeddings ($a model encode (->py-list (map first candidates)) :prompt prompt)]
-    (->> candidates
-         (group-by (->> ($a ($a model similarity embeddings embeddings) ge threshold)
-                        connected_components
-                        last
-                        (zipmap candidates)))
-         vals
-         (map (partial apply max-key last)))))
 
 (def cues-file
   (file data-directory "cues.csv"))
 
 (defn -main
   []
-  (write-csv cues-file (setval BEFORE-ELEM ["sentence" "likelihood"] (collapse (load-candidates)))
+  (write-csv cues-file (setval BEFORE-ELEM ["sentence" "likelihood"] (load-candidates))
              :close-writer? true))
