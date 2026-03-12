@@ -219,6 +219,12 @@ No. `cue` doesn't use semantic similarity to deduplicate sentences. Two sentence
 
 Yes. For deduplication, `cue` compares sentences by a normalized form. To build that form, `cue` casefolds each sentence, applies Unicode decomposition to the result, and removes non-alphanumeric characters.
 
+> Does `cue` use canonical decomposition?
+
+No. For deduplication, `cue` uses compatibility decomposition instead of canonical decomposition.
+
+That way, typographically different versions of the same wording get treated as the same sentence instead of being kept separate.
+
 > What does `cue` rank the sentences by?
 
 `cue` ranks the sentences by likelihood score.
