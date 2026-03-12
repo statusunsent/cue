@@ -189,16 +189,32 @@ $$
 P(\text{completion} | \text{prompt}) \ge e^{\text{guarantee}}
 $$
 
-## Deduplication
+## Cleanup
 
-> How do I deduplicate candidates?
+> How do I clean up candidates?
 
-You deduplicate the candidates with the `cues` command.
+You clean up the candidates with the `cues` command.
 
 ```sh
 clj -M:prod -m cues
 ```
 
-This deduplicates the candidates, ranks them, and saves the results to `data/cues.csv`.
+This trims the candidates, filters the results, deduplicates the rest, ranks them, and saves them to `data/cues.csv`.
 
 I use CSV because the final output is meant for humans to read in a spreadsheet.
+
+> When `cue` trims candidates, does it drop everything after the first period?
+
+Yes. When `cue` trims candidates, it drops everything after the first period. If a question mark or an exclamation mark comes first instead, it drops everything after that mark instead.
+
+> Does `cue` filter out punctuation-only sentences?
+
+Yes. `cue` filters out sentences whose trimmed form contains no letters or digits.
+
+> Does `cue` deduplicate two sentences that differ only in capitalization?
+
+Yes. For deduplication, `cue` compares sentences by a normalized form. To build that form, `cue` casefolds each sentence, decomposes the result, and removes non-alphanumeric characters.
+
+> What does `cue` rank the sentences by?
+
+`cue` ranks the sentences by likelihood score.
