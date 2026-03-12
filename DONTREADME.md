@@ -20,7 +20,7 @@ The mean would measure the average probability per token. That's a different cal
 
 > Can the pipeline deduplicate sentences?
 
-Yes. The pipeline uses cosine similarity and connected components to group related sentences and picks the one with the highest likelihood score from each group.
+Yes. The pipeline groups sentences by their normalized form and picks the one with the highest likelihood score from each group.
 
 ### Quantity
 
