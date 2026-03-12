@@ -213,7 +213,7 @@ Yes. `cue` filters out sentences whose trimmed form contains no letters or digit
 
 > Does `cue` deduplicate two sentences that differ only in capitalization?
 
-Yes. For deduplication, `cue` compares sentences by a normalized form. To build that form, `cue` casefolds each sentence, decomposes the result, and removes non-alphanumeric characters.
+Yes. For deduplication, `cue` compares sentences by a normalized form. To build that form, `cue` casefolds each sentence, applies Unicode decomposition to the result, and removes non-alphanumeric characters.
 
 > What does `cue` rank the sentences by?
 
