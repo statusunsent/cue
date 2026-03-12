@@ -7,11 +7,14 @@
    [com.rpl.specter :refer [AFTER-ELEM ALL BEGINNING FIRST setval transform]]
    [core :refer [candidates-file data-directory device*]]
    [lambdaisland.edn-lines :as edn-lines]
-   [libpython-clj2.python :refer [$a ->py-list from-import get-item py.. with]]))
+   [libpython-clj2.python :refer [$a ->py-list from-import get-item
+                                  initialize! py.. with]]))
+
+(initialize!)
 
 (from-import builtins slice)
 
-(from-import torch inference_mode nn nonzero tensor)
+(from-import torch cuda device inference_mode nn nonzero tensor)
 
 (from-import transformers AutoModelForCausalLM AutoTokenizer)
 
@@ -27,6 +30,11 @@
 
 (def tokenizer
   ($a AutoTokenizer from_pretrained (:model-name config)))
+
+(def device*
+  (device (if ($a cuda is_available)
+            "cuda"
+            "cpu")))
 
 (def model
   ($a AutoModelForCausalLM from_pretrained (:model-name config) :device_map device*))
