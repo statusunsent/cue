@@ -20,12 +20,14 @@
 
 (def fold (CaseMap/fold))
 
+(def normalize
+  (comp #(string/replace % #"(?U)[^\p{Alnum}]+" "")
+        #(.apply fold %)))
+
 (def clean
   (comp (partial setval* BEFORE-ELEM ["sentence" "likelihood"])
         (partial map (partial apply max-key last))
-        (comp vals (partial group-by (comp #(string/replace % #"(?U)[^\p{Alnum}]+" "")
-                                           #(.apply fold %)
-                                           first)))
+        (comp vals (partial group-by (comp normalize first)))
         (partial transform* [ALL FIRST] truncate)
         (partial filter (comp (partial re-find #"(?U)\p{Alnum}") first))))
 
