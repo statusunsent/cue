@@ -6,7 +6,8 @@
    [com.rpl.specter :refer [ALL BEFORE-ELEM FIRST setval* transform*]]
    [core :refer [candidates-file data-directory]]
    [lambdaisland.edn-lines :as edn-lines])
-  (:import [com.ibm.icu.text CaseMap]))
+  (:import [com.ibm.icu.text CaseMap]
+           [java.text Normalizer Normalizer$Form]))
 
 (defn load-candidates
   []
@@ -22,6 +23,7 @@
 
 (def normalize
   (comp #(string/replace % #"(?U)[^\p{Alnum}]+" "")
+        #(Normalizer/normalize % Normalizer$Form/NFKD)
         #(.apply fold %)))
 
 (def clean
