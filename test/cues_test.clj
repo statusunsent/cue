@@ -8,7 +8,11 @@
            clean
            count
            (= 1)))
-  (is (->> [["  Hello. This should be gone." -1]]
+  (is (->> [["  Hello." -1]]
+           clean
+           last
+           (= ["Hello." -1])))
+  (is (->> [["Hello. This should be gone." -1]]
            clean
            last
            (= ["Hello." -1])))
