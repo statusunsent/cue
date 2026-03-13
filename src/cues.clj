@@ -5,7 +5,8 @@
    [clojure.string :refer [triml]]
    [com.rpl.specter :refer [ALL BEFORE-ELEM FIRST setval* transform*]]
    [core :refer [candidates-file data-directory]]
-   [lambdaisland.edn-lines :as edn-lines]))
+   [lambdaisland.edn-lines :as edn-lines])
+  (:import [com.ibm.icu.text CaseMap]))
 
 (defn load-candidates
   []
@@ -17,8 +18,12 @@
 (def truncate
   (comp (partial re-find #"[^!.?]*[!.?]") triml))
 
+(def fold (CaseMap/fold))
+
 (def clean
   (comp (partial setval* BEFORE-ELEM ["sentence" "likelihood"])
+        (partial map (partial apply max-key last))
+        (comp vals (partial group-by (comp #(.apply fold %) first)))
         (partial transform* [ALL FIRST] truncate)
         (partial filter (comp (partial re-find #"(?U)\p{Alnum}") first))))
 
