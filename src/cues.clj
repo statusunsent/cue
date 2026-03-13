@@ -2,7 +2,7 @@
   (:require
    [babashka.fs :refer [file]]
    [charred.api :refer [write-csv]]
-   [clojure.string :refer [triml]]
+   [clojure.string :as string :refer [triml]]
    [com.rpl.specter :refer [ALL BEFORE-ELEM FIRST setval* transform*]]
    [core :refer [candidates-file data-directory]]
    [lambdaisland.edn-lines :as edn-lines])
@@ -23,7 +23,9 @@
 (def clean
   (comp (partial setval* BEFORE-ELEM ["sentence" "likelihood"])
         (partial map (partial apply max-key last))
-        (comp vals (partial group-by (comp #(.apply fold %) first)))
+        (comp vals (partial group-by (comp #(string/replace % #"(?U)[^\p{Alnum}]+" "")
+                                           #(.apply fold %)
+                                           first)))
         (partial transform* [ALL FIRST] truncate)
         (partial filter (comp (partial re-find #"(?U)\p{Alnum}") first))))
 

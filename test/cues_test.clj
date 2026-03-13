@@ -27,4 +27,8 @@
   (is (->> [["STRASSE." -1] ["STRAßE." -2]]
            clean
            rest
-           (= [["STRASSE." -1]]))))
+           (= [["STRASSE." -1]])))
+  (is (->> [["Hello!" -1] ["Hello?" -2]]
+           clean
+           rest
+           (= [["Hello!" -1]]))))
