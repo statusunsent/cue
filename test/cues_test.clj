@@ -22,5 +22,9 @@
            (= ["你好." -1])))
   (is (->> [["Hello." -1] ["hello." -2]]
            clean
-           last
-           (= ["Hello." -1]))))
+           rest
+           (= [["Hello." -1]])))
+  (is (->> [["STRASSE." -1] ["STRAßE." -2]]
+           clean
+           rest
+           (= [["STRASSE." -1]]))))
