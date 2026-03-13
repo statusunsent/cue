@@ -19,7 +19,8 @@
 
 (def clean
   (comp (partial setval* BEFORE-ELEM ["sentence" "likelihood"])
-        (partial transform* [ALL FIRST] truncate)))
+        (partial transform* [ALL FIRST] truncate)
+        (partial filter (comp (partial re-find #"(?U)\p{Alnum}") first))))
 
 (defn -main
   []
