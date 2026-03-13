@@ -4,4 +4,7 @@
    [cues :refer [clean]]))
 
 (deftest clean-empty
-  (is (= (count (clean [])) 1)))
+  (is (->> []
+           clean
+           count
+           (= 1))))
