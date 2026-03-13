@@ -203,6 +203,10 @@ This trims the candidates, filters the results, deduplicates the rest, ranks the
 
 I use CSV because the final output is meant for humans to read in a spreadsheet.
 
+> Does `cue` trim leading whitespace from candidates?
+
+Yes. `cue` removes any leading whitespace from each candidate.
+
 > When `cue` trims candidates, does it drop everything after the first period?
 
 Yes. When `cue` trims candidates, it drops everything after the first period. If a question mark or an exclamation mark comes first instead, it drops everything after that mark instead.
