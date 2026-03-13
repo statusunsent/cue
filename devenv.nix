@@ -53,6 +53,10 @@
     hello.exec = ''
       echo hello from $GREET
     '';
+    # https://github.com/lambdaisland/kaocha/blob/8846f91c9bf4338c561ffb866b5a8890e22889cd/README.md?plain=1#L115-L118
+    kaocha.exec = ''
+      clojure -M:test "$@"
+    '';
     upload.exec = ''
       rsync -avz --exclude-from .gitignore --del --exclude .git . cue:~/cue
     '';
