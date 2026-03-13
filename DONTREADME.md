@@ -213,7 +213,7 @@ Yes. When `cue` trims candidates, it drops everything after the first period. If
 
 > Does `cue` filter out punctuation-only sentences?
 
-Yes. `cue` filters out sentences whose trimmed form contains no letters or digits.
+Yes. `cue` filters out sentences whose trimmed form contains no Unicode letters or digits.
 
 > Does `cue` use semantic similarity to deduplicate sentences?
 
