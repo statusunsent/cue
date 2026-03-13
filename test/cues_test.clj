@@ -8,7 +8,19 @@
            clean
            count
            (= 1)))
-  (is (= ["Hello." -1] (last (clean [["  Hello. This should be gone." -1]]))))
-  (is (= 1 (count (clean [["!!" -1]]))))
-  (is (= ["你好." -1] (last (clean [["你好." -1]]))))
-  (is (= ["Hello." -1] (last (clean [["Hello." -1] ["hello." -2]])))))
+  (is (->> [["  Hello. This should be gone." -1]]
+           clean
+           last
+           (= ["Hello." -1])))
+  (is (->> [["!!" -1]]
+           clean
+           count
+           (= 1)))
+  (is (->> [["你好." -1]]
+           clean
+           last
+           (= ["你好." -1])))
+  (is (->> [["Hello." -1] ["hello." -2]]
+           clean
+           last
+           (= ["Hello." -1]))))
