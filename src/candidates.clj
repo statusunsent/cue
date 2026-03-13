@@ -5,7 +5,7 @@
    [clojure.math :refer [log]]
    [clojure.string :refer [includes? join]]
    [com.rpl.specter :refer [AFTER-ELEM ALL BEGINNING FIRST setval transform]]
-   [core :refer [candidates-file data-directory device*]]
+   [core :refer [candidates-file data-directory]]
    [lambdaisland.edn-lines :as edn-lines]
    [libpython-clj2.python :refer [$a ->py-list from-import get-item
                                   initialize! py.. with]]))

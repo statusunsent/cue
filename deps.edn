@@ -1,8 +1,11 @@
 {:aliases
- {:prod {:jvm-opts ["-Dprod"]}
-  :nrepl {:extra-deps {cider/cider-nrepl {:mvn/version,"0.58.0"}
+ {:nrepl {:extra-deps {cider/cider-nrepl {:mvn/version,"0.58.0"}
                        nrepl/nrepl {:mvn/version "1.5.2"}}
-          :main-opts ["-m" "nrepl.cmdline"]}}
+          :main-opts ["-m" "nrepl.cmdline"]}
+  :prod {:jvm-opts ["-Dprod"]}
+; https://github.com/lambdaisland/kaocha/blob/8846f91c9bf4338c561ffb866b5a8890e22889cd/README.md?plain=1#L108-L109
+  :test {:extra-deps {lambdaisland/kaocha {:mvn/version "1.91.1392"}}
+         :main-opts ["-m" "kaocha.runner"]}}
  :deps {babashka/fs {:mvn/version "0.5.31"}
         clj-python/libpython-clj {:mvn/version "2.026"}
         com.cnuernber/charred {:mvn/version "1.038"}

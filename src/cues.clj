@@ -2,7 +2,8 @@
   (:require
    [babashka.fs :refer [file]]
    [charred.api :refer [write-csv]]
-   [com.rpl.specter :refer [BEFORE-ELEM setval]]
+   [clojure.string :refer [triml]]
+   [com.rpl.specter :refer [ALL BEFORE-ELEM FIRST setval* transform*]]
    [core :refer [candidates-file data-directory]]
    [lambdaisland.edn-lines :as edn-lines]))
 
@@ -13,7 +14,13 @@
 (def cues-file
   (file data-directory "cues.csv"))
 
+(def truncate
+  (comp (partial re-find #"[^!.?]*[!.?]") triml))
+
+(def clean
+  (comp (partial setval* BEFORE-ELEM ["sentence" "likelihood"])
+        (partial transform* [ALL FIRST] truncate)))
+
 (defn -main
   []
-  (write-csv cues-file (setval BEFORE-ELEM ["sentence" "likelihood"] (load-candidates))
-             :close-writer? true))
+  (write-csv cues-file (clean (load-candidates)) :close-writer? true))
