@@ -20,11 +20,11 @@
 
 (def config
   (if (System/getProperty "prod")
-    {:model-name "Qwen/Qwen3-30B-A3B-Base"
+    {:model-name "Qwen/Qwen3.5-35B-A3B-Base"
      :exponent 8
 ; Using the smallest power‑of‑two batch size that achieves 100% utilization on the NVIDIA H100 80GB HBM3 GPU
      :batch-size 256}
-    {:model-name "Qwen/Qwen3-0.6B-Base"
+    {:model-name "Qwen/Qwen3.5-0.8B-Base"
      :exponent 1
      :batch-size 2}))
 
