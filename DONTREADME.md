@@ -109,7 +109,7 @@ Instead, `cue` uses a base model.
 
 No. Spontaneous conversation data is hard to find. Fine-tuning on artificially constructed data risks biasing the model toward the patterns of forced settings.
 
-> What model does `cue` use to find and rank sentences? (Planned)
+> What model does `cue` use to find and rank sentences?
 
 `cue` uses [`Qwen3.5-35B-A3B-Base`](https://huggingface.co/Qwen/Qwen3.5-35B-A3B-Base). Its post-trained counterpart, [`Qwen3.5-35B-A3B`](https://huggingface.co/Qwen/Qwen3.5-35B-A3B), is the highest-ranking model with fewer than 100B parameters on [LMArena's Text Arena](https://lmarena.ai/leaderboard/text) among models with a publicly released base counterpart. I use the rank of the instruction-tuned version as a proxy to judge the quality of the base model. Its low VRAM footprint lets me run it at full precision on a single GPU.
 
