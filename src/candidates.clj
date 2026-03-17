@@ -123,6 +123,9 @@
        surviving-tokens
        (py.. (get-item predictions (->py-list surviving-tokens)) tolist)))
 
+(def max-tokens
+  100)
+
 (defn expand-node
   [[prefix-sequence prefix-likelihood] predictions]
   (let [surviving-tokens (remove fragment-tokens (-> predictions
@@ -138,7 +141,12 @@
                                     (comp join
                                           (partial map decode*))))
                     {:append? true})
-    (expand-node* prefix-sequence prefix-likelihood predictions (remove stop-tokens surviving-tokens))))
+    (if (->> prefix-sequence
+             count
+             inc
+             (= max-tokens))
+      []
+      (expand-node* prefix-sequence prefix-likelihood predictions (remove stop-tokens surviving-tokens)))))
 
 (defn spit*
   [f content]
