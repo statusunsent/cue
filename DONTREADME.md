@@ -169,6 +169,14 @@ Yes. How the pipeline handles an ellipsis depends on which of its two forms appe
 
 No. The goal is a realistic training set. Conversation is full of sentences that refer back to the previous turn.
 
+> Does `cue` cap the length of a candidate during search?
+
+Yes. During search, `cue` stops expanding a candidate once its completion reaches 100 tokens.
+
+The cap is there to keep pathological repetition from consuming unbounded memory and compute.
+
+The kind of conversational one-sentence cues `cue` is trying to collect probably won't get anywhere near 100 tokens anyway.
+
 > Can a search run finish on its own?
 
 Yes. The search is guided by a log-likelihood threshold. This threshold is the minimum score a sentence needs from the model to make it into the results.
