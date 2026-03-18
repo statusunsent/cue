@@ -5,5 +5,10 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
+    "causal-conv1d ; sys_platform == 'linux'",
+    "flash-linear-attention>=0.4.2",
     "transformers[torch]>=5.0.0",
 ]
+
+[tool.uv.sources]
+causal-conv1d = { url = "https://github.com/Dao-AILab/causal-conv1d/releases/download/v1.6.1.post4/causal_conv1d-1.6.1+cu12torch2.10cxx11abiTRUE-cp313-cp313-linux_x86_64.whl" }
